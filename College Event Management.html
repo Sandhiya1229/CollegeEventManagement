@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Management</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f7fb;
+    color: #333;
+}
+
+header {
+    background: linear-gradient(135deg, #4b6cb7, #182848);
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+header h1 {
+    margin-bottom: 10px;
+}
+
+nav {
+    background: #111827;
+    padding: 15px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 20px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #60a5fa;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background: white;
+}
+
+.hero h2 {
+    color: #1d4ed8;
+    margin-bottom: 10px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1100px;
+    margin: 35px auto;
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #1e3a8a;
+}
+
+#search {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.event-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.event-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.event-card h3 {
+    color: #2563eb;
+    margin-bottom: 12px;
+}
+
+.event-card p {
+    margin: 8px 0;
+}
+
+.event-card button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.event-card button:hover {
+    background: #1d4ed8;
+}
+
+form {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+form input,
+form select {
+    width: 100%;
+    padding: 13px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+
+form button {
+    width: 100%;
+    padding: 13px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background: #15803d;
+}
+
+#message {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+th,
+td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+}
+
+footer {
+    background: #111827;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+@media (max-width: 600px) {
+
+    nav a {
+        display: block;
+        margin: 10px;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+    <script>
+       // Event Data
+
+       const events = [
+    {
+        name: "Tech Fest 2026",
+        date: "20 August 2026",
+        venue: "Main Auditorium",
+        description: "Technical competitions, coding and project presentations."
+    },
+    {
+        name: "Cultural Fest",
+        date: "25 August 2026",
+        venue: "College Ground",
+        description: "Dance, music, singing and cultural performances."
+    },
+    {
+        name: "Hackathon",
+        date: "30 August 2026",
+        venue: "Computer Lab",
+        description: "24-hour coding competition for students."
+    },
+    {
+        name: "Sports Meet",
+        date: "5 September 2026",
+        venue: "Sports Ground",
+        description: "Football, cricket, volleyball and athletics."
+    }
+];
+
+
+// Display Events
+
+function displayEvents(eventData = events) {
+
+    const eventList = document.getElementById("eventList");
+
+    eventList.innerHTML = "";
+
+    eventData.forEach(event => {
+
+        const card = document.createElement("div");
+
+        card.className = "event-card";
+
+        card.innerHTML = `
+            <h3>${event.name}</h3>
+
+            <p>📅 <strong>Date:</strong> ${event.date}</p>
+
+            <p>📍 <strong>Venue:</strong> ${event.venue}</p>
+
+            <p>${event.description}</p>
+
+            <button onclick="selectEvent('${event.name}')">
+                Register
+            </button>
+        `;
+
+        eventList.appendChild(card);
+    });
+}
+
+
+// Add Events to Select Box
+
+function loadEventOptions() {
+
+    const select = document.getElementById("eventName");
+
+    events.forEach(event => {
+
+        const option = document.createElement("option");
+
+        option.value = event.name;
+        option.textContent = event.name;
+
+        select.appendChild(option);
+    });
+}
+
+
+// Select Event
+
+function selectEvent(eventName) {
+
+    document.getElementById("eventName").value = eventName;
+
+    document.getElementById("register")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
+}
+
+
+// Search Events
+
+function searchEvents() {
+
+    const searchValue =
+        document.getElementById("search")
+        .value
+        .toLowerCase();
+
+    const filteredEvents = events.filter(event =>
+        event.name.toLowerCase().includes(searchValue)
+    );
+
+    displayEvents(filteredEvents);
+}
+
+
+// Registration
+
+document.getElementById("registrationForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const name =
+            document.getElementById("studentName").value;
+
+        const email =
+            document.getElementById("studentEmail").value;
+
+        const department =
+            document.getElementById("department").value;
+
+        const selectedEvent =
+            document.getElementById("eventName").value;
+
+        const registration = {
+            name: name,
+            email: email,
+            department: department,
+            event: selectedEvent
+        };
+
+
+        // Get existing registrations
+
+        let registrations =
+            JSON.parse(localStorage.getItem("registrations")) || [];
+
+
+        // Add new registration
+
+        registrations.push(registration);
+
+
+        // Save data
+
+        localStorage.setItem(
+            "registrations",
+            JSON.stringify(registrations)
+        );
+
+
+        document.getElementById("message").textContent =
+            "✅ Registration Successful!";
+
+        document.getElementById("message").style.color =
+            "green";
+
+
+        // Reset form
+
+        this.reset();
+
+
+        // Refresh table
+
+        displayRegistrations();
+    });
+
+
+// Display Registered Students
+
+function displayRegistrations() {
+
+    const list =
+        document.getElementById("registeredList");
+
+    list.innerHTML = "";
+
+    const registrations =
+        JSON.parse(localStorage.getItem("registrations")) || [];
+
+
+    registrations.forEach(registration => {
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>${registration.name}</td>
+            <td>${registration.email}</td>
+            <td>${registration.department}</td>
+            <td>${registration.event}</td>
+        `;
+
+        list.appendChild(row);
+    });
+}
+
+
+// Initial Load
+
+displayEvents();
+
+loadEventOptions();
+
+displayRegistrations();
+
+
+    </script>
+
+<header>
+    <h1>🎓 College Event Management</h1>
+    <p>Discover and Register for College Events</p>
+</header>
+
+<nav>
+    <a href="#events">Events</a>
+    <a href="#register">Register</a>
+    <a href="#registered">My Events</a>
+</nav>
+
+<section class="hero">
+    <h2>Welcome to Our College Events</h2>
+    <p>Participate, learn and enjoy!</p>
+</section>
+
+<section id="events" class="container">
+    <h2>Upcoming Events</h2>
+
+    <input
+        type="text"
+        id="search"
+        placeholder="Search events..."
+        onkeyup="searchEvents()"
+    >
+
+    <div id="eventList" class="event-container"></div>
+</section>
+
+<section id="register" class="container">
+    <h2>Event Registration</h2>
+
+    <form id="registrationForm">
+
+        <input
+            type="text"
+            id="studentName"
+            placeholder="Student Name"
+            required
+        >
+
+        <input
+            type="email"
+            id="studentEmail"
+            placeholder="Email"
+            required
+        >
+
+        <input
+            type="text"
+            id="department"
+            placeholder="Department"
+            required
+        >
+
+        <select id="eventName" required>
+            <option value="">Select Event</option>
+        </select>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <p id="message"></p>
+</section>
+
+<section id="registered" class="container">
+    <h2>Registered Students</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+
+        <tbody id="registeredList"></tbody>
+    </table>
+</section>
+
+<footer>
+    <p>© 2026 College Event Management System</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
